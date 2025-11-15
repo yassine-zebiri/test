@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .container{
+            background-color: gray;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .box{
+            width: 100%;
+            height: 50px;
+            background-color: red;
+            display: flex;
+            justify-items: center;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            
+        }
+        .min-box{
+            width: 25px;
+            height: 25px;
+            background-color: black;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            z-index: 99;
+        }
+        .fatherBox{
+            background-color: aquamarine;
+            display: flex;
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            min-width: 150px;
+            min-height: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="fatherBox" id="fatherBox">
+
+        
+        <div class="box" id="box">
+
+            
+        </div>
+        <div class="min-box" id="min-box"></div></div>
+        
+    </div>
+    <script>
+        const fatherBox=document.getElementById('fatherBox');
+        const box=document.getElementById('box');
+        var IsDrag=false;
+        var IsScroll=false;
+        let startX, startY;
+        let initialLeft, initialTop;
+
+
+        let initialWidth,initialHeight;
+
+
+        const MinBox=document.getElementById("min-box")
+        document.addEventListener("mousedown",(e)=>{
+            MouseX=e.clientX;
+            MouseY=e.clientY;
+            
+            
+        })
+        box.addEventListener("mousedown",(e)=>{
+            IsDrag=true;
+            startX=e.clientX;
+            startY= e.clientY;
+            initialLeft = fatherBox.offsetLeft;
+            initialTop = fatherBox.offsetTop;
+            
+            
+            
+        })
+        
+        MinBox.addEventListener("mousedown",(e)=>{
+            IsScroll=true;
+            startX=e.clientX ;
+            startY=e.clientY;
+
+            initialWidth=fatherBox.offsetWidth;
+            initialHeight=fatherBox.offsetHeight;
+            
+        })
+
+
+        document.addEventListener("mousemove",(e)=>{
+
+            if(IsDrag){
+                const dx=e.clientX -startX;
+                const dy=e.clientY - startY;
+                fatherBox.style.left=`${initialLeft+dx}px`
+                fatherBox.style.top=`${initialTop+dy}px`
+            }
+            if(IsScroll){
+                console.log(e.offsetX);
+                const dx=e.clientX - startX;
+                const dy=e.clientY - startY;
+                
+                fatherBox.style.width=`${initialWidth+dx}px`
+                fatherBox.style.height=`${initialHeight+ dy}px`
+            }
+
+        })
+        document.addEventListener("mouseup",()=>{
+            IsDrag=false;
+            IsScroll=false;
+        })
+
+
+        box.addEventListener("touchstart",(e)=>{
+            IsDrag=true;
+            startX=e.targetTouches.item(0).clientX;
+            startY= e.targetTouches.item(0).clientY;
+            initialLeft = fatherBox.offsetLeft;
+            initialTop = fatherBox.offsetTop;
+            console.log("start");
+            console.log(startX);
+            
+            
+            
+            
+              
+        })
+        MinBox.addEventListener("touchstart",(e)=>{
+            IsScroll=true;
+            startX=e.targetTouches.item(0).clientX;
+            startY= e.targetTouches.item(0).clientY;
+
+            initialWidth=fatherBox.offsetWidth;
+            initialHeight=fatherBox.offsetHeight;
+            
+        })
+        document.addEventListener("touchmove",(e)=>{
+
+            if(IsDrag){
+                const dx=e.targetTouches.item(0).clientX -startX;
+                const dy=e.targetTouches.item(0).clientY - startY;
+                fatherBox.style.left=`${initialLeft+dx}px`
+                fatherBox.style.top=`${initialTop+dy}px`
+                console.log("move");
+                
+            }
+            if(IsScroll){
+                console.log(e.offsetX);
+                const dx=e.targetTouches.item(0).clientX - startX;
+                const dy=e.targetTouches.item(0).clientY - startY;
+                
+                fatherBox.style.width=`${initialWidth+dx}px`
+                fatherBox.style.height=`${initialHeight+ dy}px`
+            }
+
+        })
+         document.addEventListener("touchend",()=>{
+            IsDrag=false;
+            IsScroll=false;
+            console.log("up");
+            
+        })
+
+        
+    </script>
+</body>
+</html>
